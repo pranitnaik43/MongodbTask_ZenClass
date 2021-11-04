@@ -1,0 +1,11 @@
+{"_id":{"$oid":"6182d46f97bd93a43975b1ed"},"id":{"$numberInt":"1"},"student_id":"s1","topic_id":{"$numberInt":"19"},"status":"present"}
+{"_id":{"$oid":"6182d46f97bd93a43975b1ee"},"id":{"$numberInt":"11"},"student_id":"s1","topic_id":{"$numberInt":"17"},"status":"present"}
+{"_id":{"$oid":"6182d46f97bd93a43975b1ef"},"id":{"$numberInt":"12"},"student_id":"s2","topic_id":{"$numberInt":"18"},"status":"absent"}
+{"_id":{"$oid":"6182d46f97bd93a43975b1f0"},"id":{"$numberInt":"13"},"student_id":"s3","topic_id":{"$numberInt":"20"},"status":"present"}
+{"_id":{"$oid":"6182d46f97bd93a43975b1f1"},"id":{"$numberInt":"14"},"student_id":"s4","topic_id":{"$numberInt":"19"},"status":"present"}
+{"_id":{"$oid":"6182d46f97bd93a43975b1f2"},"id":{"$numberInt":"15"},"student_id":"s5","topic_id":{"$numberInt":"18"},"status":"present"}
+{"_id":{"$oid":"6182d46f97bd93a43975b1f3"},"id":{"$numberInt":"16"},"student_id":"s6","topic_id":{"$numberInt":"20"},"status":"absent"}
+{"_id":{"$oid":"6182d46f97bd93a43975b1f4"},"id":{"$numberInt":"17"},"student_id":"s7","topic_id":{"$numberInt":"17"},"status":"present"}
+{"_id":{"$oid":"6182d46f97bd93a43975b1f5"},"id":{"$numberInt":"18"},"student_id":"s8","topic_id":{"$numberInt":"18"},"status":"present"}
+{"_id":{"$oid":"6182d46f97bd93a43975b1f6"},"id":{"$numberInt":"19"},"student_id":"s9","topic_id":{"$numberInt":"19"},"status":"absent"}
+{"_id":{"$oid":"6182d46f97bd93a43975b1f7"},"id":{"$numberInt":"20"},"student_id":"s9","topic_id":{"$numberInt":"20"},"status":"present"}

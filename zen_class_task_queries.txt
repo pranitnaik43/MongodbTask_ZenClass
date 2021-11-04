@@ -1,0 +1,186 @@
+1. Find all topics and tasks from the month of october
+=>
+db.tasks.aggregate([
+  {
+    $project: {
+        month: {
+            $month: "$timestamp"
+        },
+        Description: 1,
+        student_id: 1,
+        topic_id: 1,
+        timestamp: 1
+    }
+  },
+  {
+    $match: {
+        month: 10
+    }
+  }
+]);
+
+db.Topics.aggregate([
+  {
+      $project: {
+          month: {
+              $month: "$date"
+          },
+          Name: 1,
+          mentor_id: 1,
+          batch_id: 1,
+          date: 1
+      }
+      
+  },
+  {
+      $match: {
+          month: 10 
+      }
+  }
+])
+    
+2. all company drives that occured between 15-oct-2021 and 30 oct 2021
+=> 
+db.company_drives.aggregate([
+  {
+    $project: {
+      month: {
+          $month: "$date"
+      },
+      year: {
+          $year: "$date"
+      },
+      dd: {
+          $dayOfMonth: "$date"
+      },
+      company_id: 1,
+      date: 1
+    }
+  },
+  {
+    $match: {
+        month: 10,
+        year: 2021,
+        $and: [ { dd: { $gte: 15, $lte: 30 } }]
+    }
+  }
+])
+
+3. Find all the company drives and students who are appeared for the placement
+=>
+db.company_drives.find({}).project({company_id: 1, students_appeared: 1})
+
+4. Find the number of problems solved by the user in codekata
+=>
+db.Codekata.aggregate([
+    {
+        $group: { _id:"$student_id", questions: { $addToSet: '$question_id'} }
+    },
+    {
+        $unwind:"$questions"
+    },
+    {
+        $group: { _id: "$_id", NumOfQuestionsSolved: { $sum:1} }
+    }
+])
+
+5. Find all the mentors with who has the mentee's count more than 15
+db.Students.aggregate([
+    {
+        $group: { _id:"$mentor_id", studentsCount: { $sum:1} }
+    },
+    {
+        $project : { _id: 0, mentor_id:"$_id", studentsCount: 1}
+    },
+    {
+        $lookup: { 
+            from: "Mentors",
+            localField: "mentor_id",
+            foreignField: "id",
+            as: "mentorDetails"
+        }
+    }
+]);
+
+
+6. Find the number of students who are absent and task is not submitted  between 15 oct-2021 and 31-oct-2021
+a. number of students who are absent between 15 oct-2021 and 31-oct-2021
+->
+db.Attendance.aggregate([
+  {
+    $lookup: { 
+        from: "Topics",
+        localField: "topic_id",
+        foreignField: "id",
+        as: "topicDetails"
+    }
+  },
+  {
+    $project: {
+        student_id: 1, topic_id:1, status: 1, date: "$topicDetails.date"
+    }
+  },
+  {
+    $unwind:"$date"
+  },
+  {
+    $project: {
+        student_id: 1, topic_id:1, status: 1, yy: {$year: "$date"}, mm: {$month: "$date"}, dd: {$dayOfMonth: "$date"}
+    }
+  },
+  {
+      $match: {
+          yy: 2021,
+          mm: 10,
+          $and: [ { dd: { $gte: 15, $lte: 30 } }],
+          status: "absent"
+      }
+  },
+  {
+      $group: { _id: "", count: {$sum:1}}
+  }  
+])
+
+b. number of students who did not submit any task between 15 oct-2021 and 31-oct-2021
+->
+db.tasks.aggregate([
+  {
+    $project: {
+        student_id: 1, timestamp: 1
+    }
+  },
+  {
+    $project: {
+        student_id: 1, yy: {$year: "$timestamp"}, mm: {$month: "$timestamp"}, dd: {$dayOfMonth: "$timestamp"}
+    }
+  },
+  {
+      $project: {
+          student_id: 1, yy:1, mm:1, dd:1, flag: {$cond: { if: { 
+                    $and: [{$eq: [ "$yy", 2021 ]}, {$eq: [ "$mm", 10 ]}
+                    , {$and: [ { "$gte": ["$dd", 15 ] }, { "$lte": ["$dd", 30 ] }]}]
+                }, then: 1, else: 0 }}
+      }
+  }, 
+  {
+    $match: {
+        flag: 0
+    }
+  },
+  {
+    $group: { _id: "", count: {$sum:1}}
+  }
+])
+
+    
+    
+    
+
+
+
+
+
+
+
+
+
